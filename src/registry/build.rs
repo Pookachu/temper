@@ -31,7 +31,12 @@ struct BlockRegistry {
 }
 
 #[derive(Deserialize)]
-struct ProtocolIdRegistry {
+struct ItemRegistry {
+    entries: HashMap<String, ProtocolIdEntry>,
+}
+
+#[derive(Deserialize)]
+struct BlockEntityTypeRegistry {
     entries: HashMap<String, ProtocolIdEntry>,
 }
 
@@ -39,13 +44,13 @@ struct ProtocolIdRegistry {
 #[derive(Deserialize)]
 struct RegistryRoot {
     #[serde(rename = "minecraft:item")]
-    item: ProtocolIdRegistry,
+    item: ItemRegistry,
 
     #[serde(rename = "minecraft:block")]
     block: BlockRegistry,
 
     #[serde(rename = "minecraft:block_entity_type")]
-    block_entity_type: ProtocolIdRegistry,
+    block_entity_type: BlockEntityTypeRegistry,
 }
 
 // --- 2. The Main Build Function ---
