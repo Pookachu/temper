@@ -16,7 +16,8 @@ use std::sync::atomic::AtomicBool;
 use temper_core::block_state_id::BlockStateId;
 use temper_core::pos::{ChunkBlockPos, ChunkHeight};
 use temper_entities::entity_types::EntityTypeEnum;
-use temper_macros::{block, match_block};
+use temper_macros::{NBTSerialize, block, match_block};
+use temper_text::TextComponent;
 use type_hash::TypeHash;
 use uuid::Uuid;
 use vanilla_chunk_format::VanillaChunk;
@@ -27,6 +28,9 @@ pub struct Chunk {
     height: ChunkHeight,
     #[type_hash(foreign_type)]
     pub entities: DashMap<Uuid, (EntityTypeEnum, Vec<u8>)>,
+
+    #[type_hash(foreign_type)]
+    pub block_entities: DashMap<ChunkBlockPos, (BlockEntityKind, Vec<u8>)>,
 
     pub heightmaps: Heightmaps,
     dirty: Arc<AtomicBool>,
@@ -135,6 +139,7 @@ impl Chunk {
             dirty: Arc::new(AtomicBool::new(false)),
             stage: 0,
             noise: ChunkNoises::default(),
+            block_entities: DashMap::new(),
         }
     }
 
@@ -160,6 +165,7 @@ impl Chunk {
             height,
             heightmaps: Heightmaps::default(),
             entities: DashMap::new(),
+            block_entities: DashMap::new(),
             dirty: Arc::new(AtomicBool::new(false)),
             stage: 0,
             noise: ChunkNoises::default(),
@@ -171,6 +177,7 @@ impl Chunk {
             sections: self.sections.clone(),
             height: self.height,
             entities: self.entities.clone(),
+            block_entities: self.block_entities.clone(),
             heightmaps: self.heightmaps.clone(),
             dirty: Arc::clone(&self.dirty),
             stage: self.stage,
@@ -468,11 +475,34 @@ impl TryFrom<&VanillaChunk> for Chunk {
                 .and_then(|h| Heightmaps::try_from(h).ok())
                 .unwrap_or_default(),
             entities: DashMap::new(),
+            block_entities: DashMap::new(),
             dirty: Arc::new(AtomicBool::new(false)),
             stage: 6,
             noise: ChunkNoises::default(),
         })
     }
+}
+
+/// A block entity type stored in a chunk. The variant determines how the
+/// accompanying blob deserializes; the protocol ID for the wire comes from
+/// the blockstate via `temper_data`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum BlockEntityKind {
+    Sign,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, NBTSerialize)]
+pub struct SignText {
+    pub messages: Vec<TextComponent>,
+    pub color: String,
+    pub has_glowing_text: bool,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, NBTSerialize)]
+pub struct SignBlockEntity {
+    pub is_waxed: bool,
+    pub front_text: SignText,
+    pub back_text: SignText,
 }
 
 #[cfg(test)]
