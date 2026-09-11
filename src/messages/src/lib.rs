@@ -31,6 +31,7 @@ pub mod particle;
 pub use entity_spawn::{DespawnMob, SpawnMobBundle, SpawnMobCommand};
 
 pub mod block_break;
+pub mod block_entity_placed;
 pub mod block_interaction;
 pub mod cross_chunk_boundary_event;
 pub mod destroy_entity;
@@ -52,6 +53,7 @@ use crate::particle::SendParticle;
 use crate::save_chunk_entities::SaveChunkEntities;
 use crate::teleport_entity::TeleportEntity;
 pub use block_break::BlockBrokenEvent;
+pub use block_entity_placed::BlockEntityPlaced;
 pub use block_interaction::BlockInteractMessage;
 use temper_command_infra::{CommandDispatched, RebuildCommandGraph};
 use world_change::WorldChange;
@@ -87,4 +89,5 @@ pub fn register_messages(world: &mut World) {
     MessageRegistry::register_message::<SaveChunkEntities>(world);
     MessageRegistry::register_message::<DestroyEntity>(world);
     MessageRegistry::register_message::<ChunkBoundaryCrossed>(world);
+    MessageRegistry::register_message::<BlockEntityPlaced>(world);
 }

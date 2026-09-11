@@ -529,7 +529,17 @@ pub struct SignText {
     pub has_glowing_text: bool,
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, NBTSerialize)]
+impl Default for SignText {
+    fn default() -> Self {
+        Self {
+            messages: vec![TextComponent::default(); 4],
+            color: "black".to_string(),
+            has_glowing_text: false,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, NBTSerialize)]
 pub struct SignBlockEntity {
     pub is_waxed: bool,
     pub front_text: SignText,

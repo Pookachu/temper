@@ -15,6 +15,7 @@ temper-codec = { workspace = true }
 temper-inventories = { workspace = true }
 temper-particles = { workspace = true }
 temper-entities = { workspace = true }
+temper-world-format = { workspace = true }
 
 [lints]
 workspace = true
