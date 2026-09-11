@@ -20,7 +20,9 @@ impl BlockBehavior for SignBlock {
 }
 
 /// Standing signs use a 16-step rotation rather than a 4-direction facing.
-/// Same convention as `Direction::from_yaw`, just finer-grained.
+/// Rotation 0 is south, increasing counter-clockwise in 22.5 degree steps —
+/// the same convention as `Direction::from_yaw`, but the value is where the
+/// sign's face points, so it's the player's yaw turned around.
 fn yaw_to_sign_rotation(yaw: f32) -> i32 {
-    ((yaw / 22.5 + 0.5).floor() as i32).rem_euclid(16)
+    ((yaw / 22.5 + 0.5).floor() as i32 + 8).rem_euclid(16)
 }
