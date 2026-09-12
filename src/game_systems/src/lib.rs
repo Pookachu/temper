@@ -66,6 +66,7 @@ fn register_tick_systems(schedule: &mut Schedule) {
     schedule.add_systems(packets::pick_item_from_block::handle);
     schedule.add_systems(packets::signs::handle_sign_placed);
     schedule.add_systems(packets::signs::handle_sign_update);
+    schedule.add_systems(packets::signs::handle_sign_interact);
 
     schedule.add_systems(player::digging_system::handle_start_digging);
     schedule.add_systems(player::digging_system::handle_finish_digging);

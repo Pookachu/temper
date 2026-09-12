@@ -3,10 +3,13 @@ use bevy_ecs::{
     system::{Query, Res},
 };
 
+use temper_block_properties::Direction;
+use temper_blocks::BlockDispatch;
+use temper_blocks_generated::{HangingSignBlock, SignBlock, WallHangingSignBlock};
 use temper_codec::net_types::{network_position::NetworkPosition, var_int::VarInt};
-use temper_components::player::position::Position;
-use temper_core::pos::BlockPos;
-use temper_messages::BlockEntityPlaced;
+use temper_components::player::{position::Position, rotation::Rotation};
+use temper_core::{block_state_id::BlockStateId, pos::BlockPos};
+use temper_messages::{BlockEntityPlaced, BlockInteractMessage};
 use temper_net_runtime::connection::StreamWriter;
 use temper_protocol::{
     SignUpdateReceiver,
@@ -18,6 +21,12 @@ use temper_world::Dimension;
 use temper_world_format::{BlockEntityKind, SignBlockEntity};
 
 use tracing::{error, trace};
+
+/// A sanity bound on sign line length. Vanilla's client limits by rendered
+/// pixel width rather than character count, which isn't worth replicating —
+/// this exists to stop a modified client storing and broadcasting megabytes
+/// of text per edit.
+const MAX_SIGN_LINE_LEN: usize = 384;
 
 pub fn handle_sign_placed(
     mut events: MessageReader<BlockEntityPlaced>,
@@ -53,6 +62,14 @@ pub fn handle_sign_update(
 ) {
     for (event, eid) in receiver.0.try_iter() {
         let block_pos: BlockPos = event.position.into();
+
+        if [&event.line_1, &event.line_2, &event.line_3, &event.line_4]
+            .iter()
+            .any(|line| line.len() > MAX_SIGN_LINE_LEN)
+        {
+            trace!("Rejecting oversized sign update from {eid:?} at {block_pos}");
+            continue;
+        }
 
         let Ok(chunk) = state
             .0
@@ -145,4 +162,99 @@ pub fn handle_sign_update(
             }
         }
     }
+}
+
+/// Reopens the sign editor when a player right-clicks an unwaxed sign.
+pub fn handle_sign_interact(
+    mut events: MessageReader<BlockInteractMessage>,
+    state: Res<GlobalStateResource>,
+    query: Query<(&StreamWriter, &Rotation)>,
+) {
+    for event in events.read() {
+        let block_pos = event.position;
+
+        let Ok(chunk) = state
+            .0
+            .world
+            .get_chunk(block_pos.chunk(), Dimension::Overworld)
+        // todo: dimensions
+        else {
+            continue;
+        };
+
+        let Some(entry) = chunk.block_entities.get(&block_pos.chunk_block_pos()) else {
+            continue;
+        };
+
+        if entry.kind != BlockEntityKind::Sign {
+            continue;
+        }
+
+        let sign: SignBlockEntity = match serde_json::from_slice(&entry.blob) {
+            Ok(sign) => sign,
+            Err(err) => {
+                error!("Failed to read sign at {block_pos}: {err}");
+                continue;
+            }
+        };
+
+        if sign.is_waxed {
+            trace!("Ignoring interact on a waxed sign at {block_pos}");
+            continue;
+        }
+
+        drop(entry);
+
+        let block_state = chunk.get_block(block_pos.chunk_block_pos());
+
+        let Ok((conn, rotation)) = query.get(event.player) else {
+            continue;
+        };
+
+        let is_front_text = sign_front_faces_player(block_state, rotation.yaw);
+
+        if let Err(err) = conn.send_packet(OpenSignEditor {
+            location: NetworkPosition {
+                x: block_pos.pos.x,
+                y: block_pos.pos.y as i16,
+                z: block_pos.pos.z,
+            },
+            is_front_text,
+        }) {
+            error!("Failed to send open sign editor packet: {:?}", err);
+        }
+    }
+}
+
+/// Whether the player is looking at the sign's front face. Signs with two
+/// visible faces need this so right-clicking edits the side you can see;
+/// wall signs have one visible face and always use the front.
+fn sign_front_faces_player(block_state: BlockStateId, yaw: f32) -> bool {
+    if let Some(sign) = block_state.try_cast::<SignBlock>() {
+        return front_faces_player(sign.rotation, yaw);
+    }
+
+    if let Some(sign) = block_state.try_cast::<HangingSignBlock>() {
+        return front_faces_player(sign.rotation, yaw);
+    }
+
+    if let Some(sign) = block_state.try_cast::<WallHangingSignBlock>() {
+        let front = match sign.facing {
+            Direction::South => 0.0,
+            Direction::West => 90.0,
+            Direction::North => 180.0,
+            Direction::East => 270.0,
+            _ => return true,
+        };
+        let diff = (yaw - front).rem_euclid(360.0);
+        return diff > 90.0 && diff < 270.0;
+    }
+    true
+}
+
+/// Shared by standing and hanging signs, which both use a 16-step rotation.
+fn front_faces_player(rotation: i32, yaw: f32) -> bool {
+    let front = f32::from(rotation as f32) * 22.5;
+    let diff = (yaw - front).rem_euclid(360.0);
+    diff > 90.0 && diff < 270.0
 }
