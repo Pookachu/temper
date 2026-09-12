@@ -6,4 +6,3 @@ impl BlockBehavior for WallHangingSignBlock {
         true
     }
 }
-
