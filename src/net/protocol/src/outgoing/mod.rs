@@ -71,3 +71,6 @@ pub mod boss_event;
 
 pub mod block_entity_data;
 pub mod open_sign_editor;
+pub mod damage_player;
+
+pub mod player_death;
