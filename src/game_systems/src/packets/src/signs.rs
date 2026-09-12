@@ -254,7 +254,7 @@ fn sign_front_faces_player(block_state: BlockStateId, yaw: f32) -> bool {
 
 /// Shared by standing and hanging signs, which both use a 16-step rotation.
 fn front_faces_player(rotation: i32, yaw: f32) -> bool {
-    let front = f32::from(rotation as f32) * 22.5;
+    let front = (rotation as f32) * 22.5;
     let diff = (yaw - front).rem_euclid(360.0);
     diff > 90.0 && diff < 270.0
 }

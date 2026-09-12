@@ -43,11 +43,10 @@ type InteractQuery<'a> = (
 /// the prediction until it sees this sequence, so every path out of the
 /// handler needs to send one.
 fn send_ack(query: &Query<InteractQuery>, player: Entity, sequence: VarInt, context: &str) {
-    if let Ok((_, conn, _, _)) = query.get(player) {
-        if let Err(e) = conn.send_packet_ref(&BlockChangeAck { sequence }) {
+    if let Ok((_, conn, _, _)) = query.get(player)
+        && let Err(e) = conn.send_packet_ref(&BlockChangeAck { sequence }) {
             error!("Failed to send BlockChangeAck ({context}): {:?}", e);
         }
-    }
 }
 
 pub fn handle_block_interact(
