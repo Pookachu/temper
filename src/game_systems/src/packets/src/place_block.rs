@@ -160,12 +160,16 @@ pub fn handle(
                         continue 'ev_loop;
                     }
 
-                    let mut block_state = ITEM_TO_BLOCK_MAPPING
+                    let Some(mut block_state) = ITEM_TO_BLOCK_MAPPING
                         .get()
                         .unwrap()
                         .get(&(item_id.as_u32() as i32))
                         .copied()
-                        .unwrap();
+                    else {
+                        // Not a placeable item, nothing to do here until item-on-block
+                        // interactions exist.
+                        continue 'ev_loop;
+                    };
 
                     let mut placement_context = temper_blocks::PlacementContext {
                         face: event.face.clone(),
