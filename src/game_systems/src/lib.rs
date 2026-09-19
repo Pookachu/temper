@@ -91,8 +91,10 @@ fn register_tick_systems(schedule: &mut Schedule) {
             player::emit_player_joined::emit_player_joined,
             player::player_spawn::handle,
         )
-            .chain(),
+            .chain()
+            .before(TickPhase::VisibleTracking),
     );
+    
     schedule.add_systems(player::player_despawn::handle);
     schedule.add_systems(player::player_join_message::handle);
     schedule.add_systems(player::player_leave_message::handle);
