@@ -3,8 +3,10 @@ use proc_macro2::{Span, TokenStream};
 use quote::{format_ident, quote};
 use serde::{Deserialize, Deserializer};
 use serde_json::Value;
+use std::path::Path;
 use std::{collections::BTreeMap, fs};
 use syn::{LitBool, LitFloat, LitInt};
+use temper_assets::asset_path;
 
 fn deserialize_carvers<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
 where
@@ -131,17 +133,47 @@ pub struct MusicData {
 }
 
 pub(crate) fn build() -> TokenStream {
-    println!("Building biomes...");
-    println!("cargo:rerun-if-changed=../../assets/extracted/biome.json");
+    const BIOMES_PATH: &str = asset_path!("data", "minecraft", "worldgen", "biome");
 
-    let biomes: BTreeMap<String, Biome> =
-        serde_json::from_str(&fs::read_to_string("../../assets/extracted/biome.json").unwrap())
-            .expect("Failed to parse biome.json");
+    println!("Building biomes...");
+    println!("cargo:rerun-if-changed={}", BIOMES_PATH);
+
+    let mut biomes: BTreeMap<String, Biome> = BTreeMap::new();
+
+    fn read_directory(dir: impl AsRef<Path>, biomes: &mut BTreeMap<String, Biome>) {
+        let dir = dir.as_ref();
+
+        for entry in fs::read_dir(dir).unwrap() {
+            let entry = entry.unwrap();
+
+            if entry.metadata().unwrap().is_dir() {
+                read_directory(entry.path(), biomes);
+                continue;
+            }
+
+            let data = fs::read_to_string(entry.path()).unwrap();
+            let biome = serde_json::from_str::<Biome>(&data).unwrap();
+            biomes.insert(
+                entry
+                    .path()
+                    .strip_prefix(BIOMES_PATH)
+                    .unwrap()
+                    .display()
+                    .to_string()
+                    .strip_suffix(".json")
+                    .unwrap()
+                    .to_string(),
+                biome,
+            );
+        }
+    }
+
+    read_directory(BIOMES_PATH, &mut biomes);
 
     let mut constants = TokenStream::new();
     let mut type_from_name = TokenStream::new();
 
-    for (name, biome) in biomes.iter() {
+    for (protocol_id, (name, biome)) in biomes.iter().enumerate() {
         let const_ident = format_ident!("{}", name.to_shouty_snake_case());
 
         let has_precipitation = LitBool::new(biome.has_precipitation, Span::call_site());
@@ -191,6 +223,7 @@ pub(crate) fn build() -> TokenStream {
         constants.extend(quote! {
             pub const #const_ident: Biome = Biome {
                 name: #name,
+                id: #protocol_id,
                 has_precipitation: #has_precipitation,
                 temperature: #temperature,
                 downfall: #downfall,
@@ -214,6 +247,7 @@ pub(crate) fn build() -> TokenStream {
         #[derive(Debug, Clone, Copy, PartialEq)]
         pub struct Biome {
             pub name: &'static str,
+            pub id: usize,
             pub has_precipitation: bool,
             pub temperature: f64,
             pub downfall: f64,

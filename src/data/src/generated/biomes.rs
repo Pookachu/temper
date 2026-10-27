@@ -1,6 +1,7 @@
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Biome {
     pub name: &'static str,
+    pub id: usize,
     pub has_precipitation: bool,
     pub temperature: f64,
     pub downfall: f64,
@@ -15,6 +16,7 @@ pub struct Biome {
 impl Biome {
     pub const BADLANDS: Biome = Biome {
         name: "badlands",
+        id: 0usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -28,6 +30,7 @@ impl Biome {
     };
     pub const BAMBOO_JUNGLE: Biome = Biome {
         name: "bamboo_jungle",
+        id: 1usize,
         has_precipitation: true,
         temperature: 0.9,
         downfall: 0.9,
@@ -41,6 +44,7 @@ impl Biome {
     };
     pub const BASALT_DELTAS: Biome = Biome {
         name: "basalt_deltas",
+        id: 2usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -54,6 +58,7 @@ impl Biome {
     };
     pub const BEACH: Biome = Biome {
         name: "beach",
+        id: 3usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.4,
@@ -67,6 +72,7 @@ impl Biome {
     };
     pub const BIRCH_FOREST: Biome = Biome {
         name: "birch_forest",
+        id: 4usize,
         has_precipitation: true,
         temperature: 0.6,
         downfall: 0.6,
@@ -80,6 +86,7 @@ impl Biome {
     };
     pub const CHERRY_GROVE: Biome = Biome {
         name: "cherry_grove",
+        id: 5usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.8,
@@ -93,6 +100,7 @@ impl Biome {
     };
     pub const COLD_OCEAN: Biome = Biome {
         name: "cold_ocean",
+        id: 6usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -106,6 +114,7 @@ impl Biome {
     };
     pub const CRIMSON_FOREST: Biome = Biome {
         name: "crimson_forest",
+        id: 7usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -119,6 +128,7 @@ impl Biome {
     };
     pub const DARK_FOREST: Biome = Biome {
         name: "dark_forest",
+        id: 8usize,
         has_precipitation: true,
         temperature: 0.7,
         downfall: 0.8,
@@ -132,6 +142,7 @@ impl Biome {
     };
     pub const DEEP_COLD_OCEAN: Biome = Biome {
         name: "deep_cold_ocean",
+        id: 9usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -145,6 +156,7 @@ impl Biome {
     };
     pub const DEEP_DARK: Biome = Biome {
         name: "deep_dark",
+        id: 10usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.4,
@@ -158,6 +170,7 @@ impl Biome {
     };
     pub const DEEP_FROZEN_OCEAN: Biome = Biome {
         name: "deep_frozen_ocean",
+        id: 11usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -171,6 +184,7 @@ impl Biome {
     };
     pub const DEEP_LUKEWARM_OCEAN: Biome = Biome {
         name: "deep_lukewarm_ocean",
+        id: 12usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -184,6 +198,7 @@ impl Biome {
     };
     pub const DEEP_OCEAN: Biome = Biome {
         name: "deep_ocean",
+        id: 13usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -197,6 +212,7 @@ impl Biome {
     };
     pub const DESERT: Biome = Biome {
         name: "desert",
+        id: 14usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -210,6 +226,7 @@ impl Biome {
     };
     pub const DRIPSTONE_CAVES: Biome = Biome {
         name: "dripstone_caves",
+        id: 15usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.4,
@@ -223,6 +240,7 @@ impl Biome {
     };
     pub const END_BARRENS: Biome = Biome {
         name: "end_barrens",
+        id: 16usize,
         has_precipitation: false,
         temperature: 0.5,
         downfall: 0.5,
@@ -236,6 +254,7 @@ impl Biome {
     };
     pub const END_HIGHLANDS: Biome = Biome {
         name: "end_highlands",
+        id: 17usize,
         has_precipitation: false,
         temperature: 0.5,
         downfall: 0.5,
@@ -249,6 +268,7 @@ impl Biome {
     };
     pub const END_MIDLANDS: Biome = Biome {
         name: "end_midlands",
+        id: 18usize,
         has_precipitation: false,
         temperature: 0.5,
         downfall: 0.5,
@@ -262,6 +282,7 @@ impl Biome {
     };
     pub const ERODED_BADLANDS: Biome = Biome {
         name: "eroded_badlands",
+        id: 19usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -275,6 +296,7 @@ impl Biome {
     };
     pub const FLOWER_FOREST: Biome = Biome {
         name: "flower_forest",
+        id: 20usize,
         has_precipitation: true,
         temperature: 0.7,
         downfall: 0.8,
@@ -288,6 +310,7 @@ impl Biome {
     };
     pub const FOREST: Biome = Biome {
         name: "forest",
+        id: 21usize,
         has_precipitation: true,
         temperature: 0.7,
         downfall: 0.8,
@@ -301,6 +324,7 @@ impl Biome {
     };
     pub const FROZEN_OCEAN: Biome = Biome {
         name: "frozen_ocean",
+        id: 22usize,
         has_precipitation: true,
         temperature: 0.0,
         downfall: 0.5,
@@ -314,6 +338,7 @@ impl Biome {
     };
     pub const FROZEN_PEAKS: Biome = Biome {
         name: "frozen_peaks",
+        id: 23usize,
         has_precipitation: true,
         temperature: -0.7,
         downfall: 0.9,
@@ -327,6 +352,7 @@ impl Biome {
     };
     pub const FROZEN_RIVER: Biome = Biome {
         name: "frozen_river",
+        id: 24usize,
         has_precipitation: true,
         temperature: 0.0,
         downfall: 0.5,
@@ -340,6 +366,7 @@ impl Biome {
     };
     pub const GROVE: Biome = Biome {
         name: "grove",
+        id: 25usize,
         has_precipitation: true,
         temperature: -0.2,
         downfall: 0.8,
@@ -353,6 +380,7 @@ impl Biome {
     };
     pub const ICE_SPIKES: Biome = Biome {
         name: "ice_spikes",
+        id: 26usize,
         has_precipitation: true,
         temperature: 0.0,
         downfall: 0.5,
@@ -366,6 +394,7 @@ impl Biome {
     };
     pub const JAGGED_PEAKS: Biome = Biome {
         name: "jagged_peaks",
+        id: 27usize,
         has_precipitation: true,
         temperature: -0.7,
         downfall: 0.9,
@@ -379,6 +408,7 @@ impl Biome {
     };
     pub const JUNGLE: Biome = Biome {
         name: "jungle",
+        id: 28usize,
         has_precipitation: true,
         temperature: 0.9,
         downfall: 0.9,
@@ -392,6 +422,7 @@ impl Biome {
     };
     pub const LUKEWARM_OCEAN: Biome = Biome {
         name: "lukewarm_ocean",
+        id: 29usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -405,6 +436,7 @@ impl Biome {
     };
     pub const LUSH_CAVES: Biome = Biome {
         name: "lush_caves",
+        id: 30usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -418,6 +450,7 @@ impl Biome {
     };
     pub const MANGROVE_SWAMP: Biome = Biome {
         name: "mangrove_swamp",
+        id: 31usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.9,
@@ -431,6 +464,7 @@ impl Biome {
     };
     pub const MEADOW: Biome = Biome {
         name: "meadow",
+        id: 32usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.8,
@@ -444,6 +478,7 @@ impl Biome {
     };
     pub const MUSHROOM_FIELDS: Biome = Biome {
         name: "mushroom_fields",
+        id: 33usize,
         has_precipitation: true,
         temperature: 0.9,
         downfall: 1.0,
@@ -457,6 +492,7 @@ impl Biome {
     };
     pub const NETHER_WASTES: Biome = Biome {
         name: "nether_wastes",
+        id: 34usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -470,6 +506,7 @@ impl Biome {
     };
     pub const OCEAN: Biome = Biome {
         name: "ocean",
+        id: 35usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -483,6 +520,7 @@ impl Biome {
     };
     pub const OLD_GROWTH_BIRCH_FOREST: Biome = Biome {
         name: "old_growth_birch_forest",
+        id: 36usize,
         has_precipitation: true,
         temperature: 0.6,
         downfall: 0.6,
@@ -496,6 +534,7 @@ impl Biome {
     };
     pub const OLD_GROWTH_PINE_TAIGA: Biome = Biome {
         name: "old_growth_pine_taiga",
+        id: 37usize,
         has_precipitation: true,
         temperature: 0.3,
         downfall: 0.8,
@@ -509,6 +548,7 @@ impl Biome {
     };
     pub const OLD_GROWTH_SPRUCE_TAIGA: Biome = Biome {
         name: "old_growth_spruce_taiga",
+        id: 38usize,
         has_precipitation: true,
         temperature: 0.2,
         downfall: 0.8,
@@ -522,6 +562,7 @@ impl Biome {
     };
     pub const PALE_GARDEN: Biome = Biome {
         name: "pale_garden",
+        id: 39usize,
         has_precipitation: true,
         temperature: 0.7,
         downfall: 0.8,
@@ -535,6 +576,7 @@ impl Biome {
     };
     pub const PLAINS: Biome = Biome {
         name: "plains",
+        id: 40usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.4,
@@ -548,6 +590,7 @@ impl Biome {
     };
     pub const RIVER: Biome = Biome {
         name: "river",
+        id: 41usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -561,6 +604,7 @@ impl Biome {
     };
     pub const SAVANNA: Biome = Biome {
         name: "savanna",
+        id: 42usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -574,6 +618,7 @@ impl Biome {
     };
     pub const SAVANNA_PLATEAU: Biome = Biome {
         name: "savanna_plateau",
+        id: 43usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -587,6 +632,7 @@ impl Biome {
     };
     pub const SMALL_END_ISLANDS: Biome = Biome {
         name: "small_end_islands",
+        id: 44usize,
         has_precipitation: false,
         temperature: 0.5,
         downfall: 0.5,
@@ -600,6 +646,7 @@ impl Biome {
     };
     pub const SNOWY_BEACH: Biome = Biome {
         name: "snowy_beach",
+        id: 45usize,
         has_precipitation: true,
         temperature: 0.1,
         downfall: 0.3,
@@ -613,6 +660,7 @@ impl Biome {
     };
     pub const SNOWY_PLAINS: Biome = Biome {
         name: "snowy_plains",
+        id: 46usize,
         has_precipitation: true,
         temperature: 0.0,
         downfall: 0.5,
@@ -626,6 +674,7 @@ impl Biome {
     };
     pub const SNOWY_SLOPES: Biome = Biome {
         name: "snowy_slopes",
+        id: 47usize,
         has_precipitation: true,
         temperature: -0.3,
         downfall: 0.9,
@@ -639,6 +688,7 @@ impl Biome {
     };
     pub const SNOWY_TAIGA: Biome = Biome {
         name: "snowy_taiga",
+        id: 48usize,
         has_precipitation: true,
         temperature: -0.5,
         downfall: 0.4,
@@ -652,6 +702,7 @@ impl Biome {
     };
     pub const SOUL_SAND_VALLEY: Biome = Biome {
         name: "soul_sand_valley",
+        id: 49usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -665,6 +716,7 @@ impl Biome {
     };
     pub const SPARSE_JUNGLE: Biome = Biome {
         name: "sparse_jungle",
+        id: 50usize,
         has_precipitation: true,
         temperature: 0.9,
         downfall: 0.8,
@@ -678,6 +730,7 @@ impl Biome {
     };
     pub const STONY_PEAKS: Biome = Biome {
         name: "stony_peaks",
+        id: 51usize,
         has_precipitation: true,
         temperature: 1.0,
         downfall: 0.3,
@@ -691,6 +744,7 @@ impl Biome {
     };
     pub const STONY_SHORE: Biome = Biome {
         name: "stony_shore",
+        id: 52usize,
         has_precipitation: true,
         temperature: 0.2,
         downfall: 0.3,
@@ -704,6 +758,7 @@ impl Biome {
     };
     pub const SULFUR_CAVES: Biome = Biome {
         name: "sulfur_caves",
+        id: 53usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.4,
@@ -717,6 +772,7 @@ impl Biome {
     };
     pub const SUNFLOWER_PLAINS: Biome = Biome {
         name: "sunflower_plains",
+        id: 54usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.4,
@@ -730,6 +786,7 @@ impl Biome {
     };
     pub const SWAMP: Biome = Biome {
         name: "swamp",
+        id: 55usize,
         has_precipitation: true,
         temperature: 0.8,
         downfall: 0.9,
@@ -743,6 +800,7 @@ impl Biome {
     };
     pub const TAIGA: Biome = Biome {
         name: "taiga",
+        id: 56usize,
         has_precipitation: true,
         temperature: 0.2,
         downfall: 0.8,
@@ -756,6 +814,7 @@ impl Biome {
     };
     pub const THE_END: Biome = Biome {
         name: "the_end",
+        id: 57usize,
         has_precipitation: false,
         temperature: 0.5,
         downfall: 0.5,
@@ -769,6 +828,7 @@ impl Biome {
     };
     pub const THE_VOID: Biome = Biome {
         name: "the_void",
+        id: 58usize,
         has_precipitation: false,
         temperature: 0.5,
         downfall: 0.5,
@@ -782,6 +842,7 @@ impl Biome {
     };
     pub const WARM_OCEAN: Biome = Biome {
         name: "warm_ocean",
+        id: 59usize,
         has_precipitation: true,
         temperature: 0.5,
         downfall: 0.5,
@@ -795,6 +856,7 @@ impl Biome {
     };
     pub const WARPED_FOREST: Biome = Biome {
         name: "warped_forest",
+        id: 60usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -808,6 +870,7 @@ impl Biome {
     };
     pub const WINDSWEPT_FOREST: Biome = Biome {
         name: "windswept_forest",
+        id: 61usize,
         has_precipitation: true,
         temperature: 0.2,
         downfall: 0.3,
@@ -821,6 +884,7 @@ impl Biome {
     };
     pub const WINDSWEPT_GRAVELLY_HILLS: Biome = Biome {
         name: "windswept_gravelly_hills",
+        id: 62usize,
         has_precipitation: true,
         temperature: 0.2,
         downfall: 0.3,
@@ -834,6 +898,7 @@ impl Biome {
     };
     pub const WINDSWEPT_HILLS: Biome = Biome {
         name: "windswept_hills",
+        id: 63usize,
         has_precipitation: true,
         temperature: 0.2,
         downfall: 0.3,
@@ -847,6 +912,7 @@ impl Biome {
     };
     pub const WINDSWEPT_SAVANNA: Biome = Biome {
         name: "windswept_savanna",
+        id: 64usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
@@ -860,6 +926,7 @@ impl Biome {
     };
     pub const WOODED_BADLANDS: Biome = Biome {
         name: "wooded_badlands",
+        id: 65usize,
         has_precipitation: false,
         temperature: 2.0,
         downfall: 0.0,
